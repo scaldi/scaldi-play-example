@@ -10,11 +10,9 @@ object ApplicationBuild extends Build {
   val appDependencies = Seq(
     jdbc,
     anorm,
-    "com.github.scaldi" %% "scaldi-play" % "0.1.1"
+    "com.github.scaldi" %% "scaldi-play" % "0.2"
   )
 
 
-  val main = play.Project(appName, appVersion, appDependencies).settings(
-    resolvers += "Angelsmasterpiece repo" at "https://raw.github.com/OlegIlyenko/angelsmasterpiece-maven-repo/master"
-  )
+  val main = play.Project(appName, appVersion, appDependencies).settings()
 }
