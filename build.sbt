@@ -3,7 +3,7 @@ name := "scaldi-play-example"
 version := "1.0-SNAPSHOT"
 
 libraryDependencies ++= Seq(
-  "org.scaldi" %% "scaldi-play" % "0.3.1"
+  "org.scaldi" %% "scaldi-play" % "0.3.2"
 )     
 
 play.Project.playScalaSettings
