@@ -68,7 +68,7 @@ class ScaldiApplicationLoader extends ApplicationLoader {
 
 object ScaldiApplicationLoader {
   def createScaldiInjector(injectors: Seq[Injector], config: Configuration) = {
-    val standard = Seq(new OnDemandAnnotationInjector, new ControllerInjector, TypesafeConfigInjector(config.underlying))
+    val standard = Seq(TypesafeConfigInjector(config.underlying), new OnDemandAnnotationInjector)
 
     (injectors ++ standard).reduce(_ :: _)
   }
