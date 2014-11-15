@@ -11,8 +11,7 @@ class OfficialMessageServiceSpec extends PlaySpecification with Injectable {
     def applicationModule = new WebModule :: new UserModule
   }
 
-  implicit lazy val injector = TestGlobal.injector
-
+  implicit def injector = TestGlobal.injector
 
   "Message Service" should {
     "provide greeting message" in {
@@ -23,7 +22,7 @@ class OfficialMessageServiceSpec extends PlaySpecification with Injectable {
         val expectedMessage = "Welcome, test!"
         val message = messageService.getGreetMessage("test")
 
-        message must beEqualTo(expectedMessage)
+        message must beEqualTo (expectedMessage)
       }
     }
   }
