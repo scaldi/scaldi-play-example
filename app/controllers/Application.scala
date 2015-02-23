@@ -1,5 +1,6 @@
 package controllers
 
+import net.sf.ehcache.CacheManager
 import play.api.mvc._
 import scaldi.{Injectable, Injector}
 import service.{ServerStatusService, MessageService}
@@ -7,9 +8,12 @@ import service.{ServerStatusService, MessageService}
 class Application(implicit inj: Injector) extends Controller with Injectable {
   val messageService = inject [MessageService]
 
-  val serverStatus = new ServerStatusService
+  val serverStatus = inject [ServerStatusService]
+  val cacheManager = inject [CacheManager]
 
   def index = Action {
+    require(cacheManager.getCache("foo") == null) // here to check play-cache usage
+
     Ok(views.html.index(messageService.getGreetMessage("Test User") + ". " + serverStatus.status))
   }
 }
