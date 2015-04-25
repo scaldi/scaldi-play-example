@@ -1,10 +1,11 @@
 package test
 
 import org.specs2.mutable._
+import play.api.mvc.{Action, Results}
 
 import play.api.test._
 import play.api.test.Helpers._
-import scaldi.play.ScaldiApplicationBuilder
+import scaldi.play.{FakeRouterModule, ScaldiApplicationBuilder}
 
 /**
  * add your integration spec here.
@@ -21,7 +22,21 @@ class IntegrationSpec extends Specification {
         browser.pageSource must contain("Test Page")
       }
     }
-    
+
+    "work from within a browser with fake routes" in {
+      val fakeRotes = FakeRouterModule {
+        case ("GET", "/some-url") => Action {
+          Results.Ok("everything is fine")
+        }
+      }
+
+      running(TestServer(3333, new ScaldiApplicationBuilder(modules = Seq(fakeRotes)).build()), HTMLUNIT) { browser =>
+        browser.goTo("http://localhost:3333/some-url")
+
+        browser.pageSource must contain("everything is fine")
+      }
+    }
+
   }
   
 }
