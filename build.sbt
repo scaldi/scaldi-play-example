@@ -5,8 +5,8 @@ version := "1.0-SNAPSHOT"
 scalaVersion := "2.11.6"
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-cache" % "2.4.0-RC3",
-  "org.scaldi" %% "scaldi-play" % "0.5-play-2.4.0-RC3-10",
+  "com.typesafe.play" %% "play-cache" % "2.4.0",
+  "org.scaldi" %% "scaldi-play" % "0.5.6-RC1",
   "org.specs2" %% "specs2-core" % "3.5" % "test",
   "org.specs2" %% "specs2-junit" % "3.5" % "test"
 )
