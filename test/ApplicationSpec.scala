@@ -6,8 +6,7 @@ import play.api.inject.BuiltinModule
 
 import play.api.test._
 import play.api.test.Helpers._
-import play.api.{Configuration, Application, GlobalSettings}
-import scaldi.play.{ScaldiApplicationBuilder, ControllerInjector, ScaldiSupport}
+import scaldi.play.{ScaldiApplicationBuilder, ControllerInjector}
 import scaldi.Module
 import service.MessageService
 import modules.{ServerModule, UserModule}

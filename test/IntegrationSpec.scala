@@ -7,10 +7,6 @@ import play.api.test._
 import play.api.test.Helpers._
 import scaldi.play.{FakeRouterModule, ScaldiApplicationBuilder}
 
-/**
- * add your integration spec here.
- * An integration test will fire up a whole play application in a real (or headless) browser
- */
 class IntegrationSpec extends Specification {
   
   "Application" should {
