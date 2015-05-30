@@ -1,3 +1,5 @@
-This is an example of Play 2 application that uses Scaldi for dependency injection
+This is an example of Play 2.4 application that uses Scaldi for dependency injection.
 
-[http://hacking-scala.tumblr.com/post/51407241538/easy-dependency-injection-in-play-framework-with-scaldi](http://hacking-scala.tumblr.com/post/51407241538/easy-dependency-injection-in-play-framework-with-scaldi)
+It can be also found as an activator template here:
+
+http://www.typesafe.com/activator/template/scaldi-play-example
