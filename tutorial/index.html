@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>An example of Play 2 application that uses Scaldi for dependency injection</title>
+    <title>An example of Play 2.4 application that uses Scaldi for dependency injection</title>
 </head>
 <body>
 <body>
@@ -83,17 +83,21 @@ class SomeService(implicit inj: Injector) extends MessageService {
 version := "1.0-SNAPSHOT"
 
 libraryDependencies ++= Seq(
-    "com.github.scaldi" %% "scaldi-play" % "0.2.2"
+    "com.github.scaldi" %% "scaldi-play" % "0.5.6"
 )
 
-play.Project.playScalaSettings
+lazy val root = (project in file(".")).enablePlugins(PlayScala)
 </code></pre>
 
-    <p>Now you are able to use Scaldi in the project. Play application normally has it's initialization logic in the <a href="#code/app/Global.scala" class="shortcut">Global</a> object, so we need to add <code>ScaldiSupport</code> in it:</p>
+    <p>
+      Now you are able to use Scaldi in the project.
+      Play application needs an application loader to be able to start and initialize your play application.
+      So let's define an application loader together with the scaldi module, we just defined above, in <a href="#code/conf/application.conf" class="shortcut">application.conf</a>:
+    </p>
 
-<pre><code>object Global extends GlobalSettings with ScaldiSupport {
-    def applicationModule = new UserModule
-}
+<pre><code>play.application.loader = scaldi.play.ScaldiApplicationLoader
+
+play.modules.enabled += "modules.UserModule"
 </code></pre>
 
     <p>Nice! Your Play application is now uses Scaldi for the dependency injection, but unfortunately it doesn't do anything, so let's fix it. Let's create a simple index page (<a href="#code/app/views/index.scala.html" class="shortcut">index.scala.html</a>) that will show greeting message to the user:</p>
@@ -105,7 +109,7 @@ play.Project.playScalaSettings
 }
 </code></pre>
 
-    <p>Now we need to create a controller for it. But instead of creating a singleton object, let's make a managed class (simmilat to the <a href="#code/app/service/Message.scala" class="shortcut">OfficialMessageService</a> class):</p>
+    <p>Now we need to create a controller for it. But instead of creating a singleton object, let's make a managed class (similar to the <a href="#code/app/service/Message.scala" class="shortcut">OfficialMessageService</a> class):</p>
 
 <pre><code>class Application(implicit inj: Injector) extends Controller with Injectable {
     val messageService = inject [MessageService]
@@ -118,7 +122,7 @@ play.Project.playScalaSettings
 
     <p>As you can see, <a href="#code/app/service/Message.scala" class="shortcut">MessageService</a> is injected and its used to produce nice greet message.</p>
 
-    <p>As you probably already aware, Play only works with singleton controllers, which means, that it requires <a href="#code/app/controllers/Application.scala" class="shortcut">Application</a> controller to be an <code>object</code> instead of <code>class</code>. Thankfully Play 2.1 introduced new feature, which makes integration with dependency injection framework like Scaldi possible. In order to use this feature, you need to prefix managed controllers with <code>@</code> in the <a href="#code/conf/routes" class="shortcut">routes</a> file. So let's make it:</p>
+    <p>In order to allow Play inject your controllers, you need to prefix them with <code>@</code> in the <a href="#code/conf/routes" class="shortcut">routes</a> file. So let's make it:</p>
 
 <pre><code>GET  /                 @controllers.Application.index
 </code></pre>
@@ -130,14 +134,17 @@ play.Project.playScalaSettings
 }
 </code></pre>
 
-    <p>and to compose <a href="#code/app/modules/WebModule.scala" class="shortcut">WebModule</a> with <a href="#code/app/modules/UserModule.scala" class="shortcut">UserModule</a> in the <a href="#code/app/Global.scala" class="shortcut">Global</a> object:</p>
+    <p>and add <a href="#code/app/modules/WebModule.scala" class="shortcut">WebModule</a> in the <a href="#code/conf/application.conf" class="shortcut">application.conf</a>:</p>
 
-<pre><code>object Global extends GlobalSettings with ScaldiSupport {
-    def applicationModule = new WebModule :: new UserModule
-}
+<pre><code>play.modules.enabled += "modules.WebModule"
 </code></pre>
 
     <p>At this point you should be able to run Play app and view the index page, that will show you: <code>Welcome, Test User!</code>.</p>
+
+    <p>Alternatively, you can use <code>scaldi.play.ControllerInjector</code>, which will bind all your controllers automatically:</p>
+
+<pre><code>play.modules.enabled += "scaldi.play.ControllerInjector"
+</code></pre>
 </div>
 
 <div>
