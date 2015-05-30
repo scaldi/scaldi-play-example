@@ -15,8 +15,6 @@ class Application(implicit inj: Injector) extends Controller with Injectable {
   val cacheManager = inject [CacheManager]
 
   def index = Action {
-    require(cacheManager.getCache("foo") == null) // here to check play-cache usage
-
     Ok(views.html.index(messageService.getGreetMessage("Test User") + ". " + serverStatus.status))
   }
 }
