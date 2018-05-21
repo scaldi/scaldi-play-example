@@ -4,10 +4,10 @@ import net.sf.ehcache.CacheManager
 import play.api.mvc._
 import scaldi.{Injectable, Injector}
 import service.{ServerStatusService, MessageService}
-import play.api.cache.CacheApi
+import play.api.cache.AsyncCacheApi
 
-class Application(implicit inj: Injector) extends Controller with Injectable {
-  val cache = inject [CacheApi]
+class Application(implicit inj: Injector) extends InjectedController with Injectable {
+  val cache = inject [AsyncCacheApi]
 
   val messageService = inject [MessageService]
 
